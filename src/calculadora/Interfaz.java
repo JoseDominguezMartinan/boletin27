@@ -6,14 +6,20 @@
 package calculadora;
 
 import Metodos.MetodosBotones;
+import Metodos.MetodosCalculos;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author jose
  */
 public class Interfaz extends javax.swing.JFrame {
+    MetodosCalculos obxMetodosCalculos=new MetodosCalculos();
+    MetodosBotones obxBotones=new MetodosBotones();
+    private float numPrincipal=0;
+    private String operacion=null;
 
     /**
      * Creates new form Intefaz
@@ -98,7 +104,11 @@ public class Interfaz extends javax.swing.JFrame {
                     break;
                 case KeyEvent.VK_NUMPAD9:
                     b9MouseClicked(null);
+                case KeyEvent.VK_ADD:
+                    bMasMouseClicked(null);
                     break;
+                case KeyEvent.VK_ENTER:
+                    bIgualMouseClicked(null);
                
 
             }
@@ -474,11 +484,14 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void bMasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bMasMouseClicked
         // TODO add your handling code here:
+       numPrincipal=obxMetodosCalculos.sumar(numPrincipal, Float.parseFloat(pantalla.getText())); // enviamos o numero que temos almacenado para facer a operacion , en caso de que sexa o primeiro numero da operacion sera cero 
+       operacion="mas";
+        pantalla.setText("0"); // volvemos a por a pantalla co numero cero 
     }//GEN-LAST:event_bMasMouseClicked
 
     private void b0MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b0MouseClicked
         // TODO add your handling code here:
-        MetodosBotones.imprimirNumero("0");
+        
     }//GEN-LAST:event_b0MouseClicked
 
     private void bComaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bComaMouseClicked
@@ -487,6 +500,10 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void bIgualMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bIgualMouseClicked
         // TODO add your handling code here:
+        numPrincipal=obxBotones.pulsarIgual(operacion, numPrincipal, Float.parseFloat(pantalla.getText()));
+        pantalla.setText(String.valueOf(numPrincipal));
+        numPrincipal=0;
+        
     }//GEN-LAST:event_bIgualMouseClicked
 
     /**
