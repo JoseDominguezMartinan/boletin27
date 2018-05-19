@@ -24,6 +24,7 @@ public class Interfaz extends javax.swing.JFrame {
     private String operacionDos = ""; // variable que indica al boton igual que operacion tiene que realizar en primer lugar en caso de que haya operaciones que predominen a otras, como multiplicar o dividir 
     public static boolean imprimir = false; // variable que si es true marca que se imprima el numero de cero y si es false que se añada el numero al que ya esta en pantalla 
     public static boolean operaciones = false; // variable que si es true indica que hay operaciones por hacer y si es false que no 
+    boolean signo=true; // variable que indica si el numero de pantalla es positivo (true) , o negativo (false)
 
     /**
      * Creates new form Intefaz
@@ -132,6 +133,10 @@ public class Interfaz extends javax.swing.JFrame {
                 case KeyEvent.VK_DIVIDE:
                     bDividirMouseClicked(null);
                     break;
+                case KeyEvent.VK_DECIMAL:
+                    bComaMouseClicked(null);
+                    break;
+                
 
             }
         }
@@ -441,14 +446,13 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void bMasmenosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bMasmenosMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_bMasmenosMouseClicked
+        signo=obxBotones.cambiarSigno(signo);
 
-    private void bTantoporcientoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bTantoporcientoMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_bTantoporcientoMouseClicked
+    }//GEN-LAST:event_bMasmenosMouseClicked
 
     private void bDividirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bDividirMouseClicked
         // TODO add your handling code here:
+        signo=true;
         if (numPrincipal == 0) {
             numPrincipal = Float.parseFloat(pantalla.getText());
             operaciones = true;
@@ -495,6 +499,7 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void bxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bxMouseClicked
         // TODO add your handling code here:
+        signo=true;
         if (numPrincipal == 0) {
             numPrincipal = Float.parseFloat(pantalla.getText());
             operaciones = true;
@@ -539,6 +544,7 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void bMenosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bMenosMouseClicked
         // TODO add your handling code here:
+        signo=true;
         if (operaciones == false) {
             numPrincipal = Float.parseFloat(pantalla.getText());
             operaciones = true;
@@ -575,6 +581,7 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void bMasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bMasMouseClicked
         // TODO add your handling code here:
+        signo=true;
          if (operaciones == false) {
             numPrincipal = Float.parseFloat(pantalla.getText());
             operaciones = true;
@@ -601,6 +608,7 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void bComaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bComaMouseClicked
         // TODO add your handling code here:
+        obxBotones.pulsarComa();
     }//GEN-LAST:event_bComaMouseClicked
 
     private void bIgualMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bIgualMouseClicked
@@ -624,6 +632,14 @@ public class Interfaz extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_bIgualMouseClicked
+
+    private void bTantoporcientoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bTantoporcientoMouseClicked
+        // TODO add your handling code here:
+        signo=true;
+        Float numeroPorcentaje=obxMetodosCalculos.tantoPorCiento(Float.parseFloat(pantalla.getText()));
+        pantalla.setText(String.valueOf(numeroPorcentaje));
+        
+    }//GEN-LAST:event_bTantoporcientoMouseClicked
 
     /**
      * @param args the command line arguments
