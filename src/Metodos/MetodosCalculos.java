@@ -10,9 +10,23 @@ package Metodos;
  * @author jose
  */
 public class MetodosCalculos {
+    float num;
     public float sumar(float num1,float num2){
-        float num=num1+num2;
+         num=num1+num2;
         return num;
+    }
+    public float restar(float num1,float num2){
+        num=num1-num2;
+        return num;
+    }
+    public float multiplicar(float num1,float num2){
+        num=num1*num2;
+        return num;
+    }
+    public float dividir(float num1, float num2){
+        num=num1/num2;
+        return num;
+        
     }
     
 }

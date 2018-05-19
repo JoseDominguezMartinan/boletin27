@@ -9,17 +9,21 @@ import Metodos.MetodosBotones;
 import Metodos.MetodosCalculos;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.JOptionPane;
 
 /**
  *
  * @author jose
  */
 public class Interfaz extends javax.swing.JFrame {
-    MetodosCalculos obxMetodosCalculos=new MetodosCalculos();
-    MetodosBotones obxBotones=new MetodosBotones();
-    private float numPrincipal=0;
-    private String operacion=null;
+
+    MetodosCalculos obxMetodosCalculos = new MetodosCalculos(); // obxeto metodos calculos para chamar aos metodos desta clase 
+    MetodosBotones obxBotones = new MetodosBotones(); // obxeto metodosBotones para chamar aos metodos desta clase 
+    private float numPrincipal = 0; //  numero almacenado en memoria para realizar las operaciones con lo que insertamos en pantalla 
+    private float numDos = 0; // numero almacenado en pantalla para realizar las operaciones cuando tenemos un signo que predomina a otro en operaciones largas 
+    private String operacion = ""; // variable que indica al boton igual que operacion tiene que realizar 
+    private String operacionDos = ""; // variable que indica al boton igual que operacion tiene que realizar en primer lugar en caso de que haya operaciones que predominen a otras, como multiplicar o dividir 
+    public static boolean imprimir = false; // variable que si es true marca que se imprima el numero de cero y si es false que se añada el numero al que ya esta en pantalla 
+    public static boolean operaciones = false; // variable que si es true indica que hay operaciones por hacer y si es false que no 
 
     /**
      * Creates new form Intefaz
@@ -40,6 +44,12 @@ public class Interfaz extends javax.swing.JFrame {
      */
     public class PresionarTecla extends KeyAdapter {
 
+        /**
+         * marcamos que al pulsar cada tecla que queramos llame al evento del
+         * boton que se corresponderia en la interfaz grafica
+         *
+         * @param e
+         */
         @Override
         public void keyPressed(KeyEvent e) {
             int codigoTecla = e.getKeyCode();
@@ -109,7 +119,19 @@ public class Interfaz extends javax.swing.JFrame {
                     break;
                 case KeyEvent.VK_ENTER:
                     bIgualMouseClicked(null);
-               
+                    break;
+                case KeyEvent.VK_SUBTRACT:
+                    bMenosMouseClicked(null);
+                    break;
+                case KeyEvent.VK_DELETE:
+                    bAcMouseClicked(null);
+                    break;
+                case KeyEvent.VK_MULTIPLY:
+                    bxMouseClicked(null);
+                    break;
+                case KeyEvent.VK_DIVIDE:
+                    bDividirMouseClicked(null);
+                    break;
 
             }
         }
@@ -413,6 +435,8 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void bAcMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bAcMouseClicked
         // TODO add your handling code here:
+        numPrincipal = 0;
+        pantalla.setText("0");
     }//GEN-LAST:event_bAcMouseClicked
 
     private void bMasmenosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bMasmenosMouseClicked
@@ -425,73 +449,154 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void bDividirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bDividirMouseClicked
         // TODO add your handling code here:
+        if (numPrincipal == 0) {
+            numPrincipal = Float.parseFloat(pantalla.getText());
+            operaciones = true;
+            imprimir = false;
+            operacion = "entre";
+        } else {
+            if (operacion == "") {
+                numPrincipal = obxBotones.pulsarIgual(operacion, numPrincipal, Float.parseFloat(pantalla.getText()));
+                operacion = "entre";
+                operaciones = true;
+                imprimir = false;
+            } else if (operacion == "entre") {
+                numPrincipal = obxMetodosCalculos.dividir(numPrincipal, Float.parseFloat(pantalla.getText()));
+                operacion = "entre";
+                operaciones = true;
+                imprimir = false;
+            } else {
+
+                numDos = Float.parseFloat(pantalla.getText());
+                operacionDos = operacion;
+                operacion = "entre";
+                operaciones = true;
+                imprimir = false;
+            }
+        }
     }//GEN-LAST:event_bDividirMouseClicked
 
     private void b7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b7MouseClicked
         // TODO add your handling code here:
-        MetodosBotones.imprimirNumero("7");
+        MetodosBotones.imprimirNumero("7", imprimir);
 
 
     }//GEN-LAST:event_b7MouseClicked
 
     private void b8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b8MouseClicked
         // TODO add your handling code here:
-        MetodosBotones.imprimirNumero("8");
+        MetodosBotones.imprimirNumero("8", imprimir);
     }//GEN-LAST:event_b8MouseClicked
 
     private void b9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b9MouseClicked
         // TODO add your handling code here:
-        MetodosBotones.imprimirNumero("9");
+        MetodosBotones.imprimirNumero("9", imprimir);
     }//GEN-LAST:event_b9MouseClicked
 
     private void bxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bxMouseClicked
         // TODO add your handling code here:
+        if (numPrincipal == 0) {
+            numPrincipal = Float.parseFloat(pantalla.getText());
+            operaciones = true;
+            imprimir = false;
+            operacion = "por";
+        } else {
+            if (operacion == "") {
+                numPrincipal = obxBotones.pulsarIgual(operacion, numPrincipal, Float.parseFloat(pantalla.getText()));
+                operacion = "por";
+                operaciones = true;
+                imprimir = false;
+            } else if (operacion == "por") {
+                numPrincipal = obxMetodosCalculos.multiplicar(numPrincipal, Float.parseFloat(pantalla.getText()));
+                operacion = "por";
+                operaciones = true;
+                imprimir = false;
+            } else {
+
+                numDos = Float.parseFloat(pantalla.getText());
+                operacionDos = operacion;
+                operacion = "por";
+                operaciones = true;
+                imprimir = false;
+            }
+        }
     }//GEN-LAST:event_bxMouseClicked
 
     private void b4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b4MouseClicked
         // TODO add your handling code here:
-        MetodosBotones.imprimirNumero("4");
+        MetodosBotones.imprimirNumero("4", imprimir);
     }//GEN-LAST:event_b4MouseClicked
 
     private void b6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b6MouseClicked
         // TODO add your handling code here:
-        MetodosBotones.imprimirNumero("6");
+        MetodosBotones.imprimirNumero("6", imprimir);
     }//GEN-LAST:event_b6MouseClicked
 
     private void b5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b5MouseClicked
         // TODO add your handling code here:
-        MetodosBotones.imprimirNumero("5");
+        MetodosBotones.imprimirNumero("5", imprimir);
     }//GEN-LAST:event_b5MouseClicked
 
     private void bMenosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bMenosMouseClicked
         // TODO add your handling code here:
+        if (operaciones == false) {
+            numPrincipal = Float.parseFloat(pantalla.getText());
+            operaciones = true;
+            imprimir = false;
+            operacion = "menos";
+        } else {
+            if (operacion != "") { // si hay una operacion pendiente de realziarse se hace 
+                numPrincipal = obxBotones.pulsarIgual(operacion, numPrincipal, Float.parseFloat(pantalla.getText()));
+                operacion = "menos"; // cargamos en la variable operacion la operacion que queremos realizar para que sea realizada en el momento de pulsar igual 
+                imprimir = false; // ponemos el valor false en la variable imprimir para que que el proximo numero que pongamos sea un numero nuevo 
+
+            } else{// despues de la operacion pendiente se hace la operacion actual 
+            numPrincipal = obxMetodosCalculos.restar(numPrincipal, Float.parseFloat(pantalla.getText())); // enviamos o numero que temos almacenado para facer a operacion , en caso de que sexa o primeiro numero da operacion sera cero 
+            operacion = "menos"; // cargamos en la variable operacion la operacion que queremos realizar para que sea realizada en el momento de pulsar igual 
+            imprimir = false; // ponemos el valor false en la variable imprimir para que que el proximo numero que pongamos sea un numero nuevo 
+            }
+        }
     }//GEN-LAST:event_bMenosMouseClicked
 
     private void b1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b1MouseClicked
         // TODO add your handling code here:
-        MetodosBotones.imprimirNumero("1");
+        MetodosBotones.imprimirNumero("1", imprimir);
     }//GEN-LAST:event_b1MouseClicked
 
     private void b2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b2MouseClicked
         // TODO add your handling code here:
-        MetodosBotones.imprimirNumero("2");
+        MetodosBotones.imprimirNumero("2", imprimir);
     }//GEN-LAST:event_b2MouseClicked
 
     private void b3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b3MouseClicked
         // TODO add your handling code here:
-        MetodosBotones.imprimirNumero("3");
+        MetodosBotones.imprimirNumero("3", imprimir);
     }//GEN-LAST:event_b3MouseClicked
 
     private void bMasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bMasMouseClicked
         // TODO add your handling code here:
-       numPrincipal=obxMetodosCalculos.sumar(numPrincipal, Float.parseFloat(pantalla.getText())); // enviamos o numero que temos almacenado para facer a operacion , en caso de que sexa o primeiro numero da operacion sera cero 
-       operacion="mas";
-        pantalla.setText("0"); // volvemos a por a pantalla co numero cero 
+         if (operaciones == false) {
+            numPrincipal = Float.parseFloat(pantalla.getText());
+            operaciones = true;
+            imprimir = false;
+            operacion = "mas";
+        } else {
+            if (operacion != "") { // si hay una operacion pendiente de realziarse se hace 
+                numPrincipal = obxBotones.pulsarIgual(operacion, numPrincipal, Float.parseFloat(pantalla.getText()));
+                operacion = "mas"; // cargamos en la variable operacion la operacion que queremos realizar para que sea realizada en el momento de pulsar igual 
+                imprimir = false; // ponemos el valor false en la variable imprimir para que que el proximo numero que pongamos sea un numero nuevo 
+
+            } else{// despues de la operacion pendiente se hace la operacion actual 
+            numPrincipal = obxMetodosCalculos.sumar(numPrincipal, Float.parseFloat(pantalla.getText())); // enviamos o numero que temos almacenado para facer a operacion , en caso de que sexa o primeiro numero da operacion sera cero 
+            operacion = "mas"; // cargamos en la variable operacion la operacion que queremos realizar para que sea realizada en el momento de pulsar igual 
+            imprimir = false; // ponemos el valor false en la variable imprimir para que que el proximo numero que pongamos sea un numero nuevo 
+            }
+        }
     }//GEN-LAST:event_bMasMouseClicked
 
     private void b0MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_b0MouseClicked
         // TODO add your handling code here:
-        
+        MetodosBotones.imprimirNumero("0", imprimir);
     }//GEN-LAST:event_b0MouseClicked
 
     private void bComaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bComaMouseClicked
@@ -500,10 +605,24 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void bIgualMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_bIgualMouseClicked
         // TODO add your handling code here:
-        numPrincipal=obxBotones.pulsarIgual(operacion, numPrincipal, Float.parseFloat(pantalla.getText()));
-        pantalla.setText(String.valueOf(numPrincipal));
-        numPrincipal=0;
-        
+        if (operacionDos != "") {
+            float resultado = obxBotones.pulsarIgual(operacion, numDos, Float.parseFloat(pantalla.getText()));
+            numPrincipal = obxBotones.pulsarIgual(operacionDos, numPrincipal, resultado);
+            pantalla.setText(String.valueOf(numPrincipal));
+            operacionDos = "";
+            numDos = 0;
+            imprimir = false;
+            operaciones = false;
+            operacion = "";
+        } else {
+            float numeroIgual = obxBotones.pulsarIgual(operacion, numPrincipal, Float.parseFloat(pantalla.getText()));
+            pantalla.setText(String.valueOf(numeroIgual));
+            numPrincipal = numeroIgual;
+            imprimir = false;
+            operaciones = false;
+            operacion = "";
+        }
+
     }//GEN-LAST:event_bIgualMouseClicked
 
     /**
